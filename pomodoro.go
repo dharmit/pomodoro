@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/0xAX/notificator"
@@ -38,11 +39,16 @@ func printCountDown(message, notifier string, minutes int) {
 }
 
 func main() {
-	work := flag.Int("w", 25, "Work duration")
-	brk := flag.Int("b", 5, "Break duration")
+	work := flag.Int("w", 25, "Work duration in minutes")
+	brk := flag.Int("b", 5, "Break duration in minutes")
 	pomodoros := flag.Int("p", 4, "Number of pomodoros in one sitting")
 
 	flag.Parse()
+
+	if *brk > *work {
+		fmt.Printf("Break time can't be more than work time! :)\n")
+		os.Exit(1)
+	}
 
 	for i := 0; i < *pomodoros; i++ {
 		printCountDown("Work for", "a break!", *work)
